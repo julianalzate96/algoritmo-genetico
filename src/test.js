@@ -56,6 +56,16 @@ const selection_and_cruce = (firstTime) => {
 
   childs = []
 
+  if (generation === 250 || generation === 500 || generation === 750) {
+    console.log("MEJORES CROMOSOMAS EN LA GENERACION: ", generation)
+    bestCromosomas.forEach((cromosoma) => {
+      console.log("CROMOSOMA PADRE: ", cromosoma.cromosoma.join(""))
+      console.log("FITNESS: ", cromosoma.fitness)
+      console.log("-")
+    })
+    console.log("-----------------------")
+  }
+
   poblation.forEach((cromosoma) => {
     let resultFitness = getFitness(cromosoma)
 
@@ -63,11 +73,20 @@ const selection_and_cruce = (firstTime) => {
       bestCromosomas.sort((a, b) => {
         return a.fitness - b.fitness
       })
-      if (resultFitness > bestCromosomas[0].fitness) {
+      if (
+        resultFitness > bestCromosomas[0].fitness &&
+        cromosoma !== bestCromosomas[1].cromosoma
+      ) {
         bestCromosomas[0] = { fitness: resultFitness, cromosoma }
       }
     } else {
-      bestCromosomas.push({ cromosoma, fitness: resultFitness })
+      if (bestCromosomas.length) {
+        if (bestCromosomas[0].cromosoma !== cromosoma) {
+          bestCromosomas.push({ cromosoma, fitness: resultFitness })
+        }
+      } else {
+        bestCromosomas.push({ cromosoma, fitness: resultFitness })
+      }
     }
   })
 
@@ -105,13 +124,35 @@ const mutation = () => {
     }
   })
 
+  if (generation === 250 || generation === 500 || generation === 750) {
+    console.log(
+      "HIJOS DE LOS MEJORES CROMOSOMAS EN LA GENERACION: ",
+      generation
+    )
+    childs.forEach((child) => {
+      console.log("CROMOSOMA HIJO; ", child.join(""))
+      console.log("-")
+    })
+    console.log("-----------------------")
+  }
+
   poblation = [...childs, ...poblation]
 }
 
 // Generamos nuestra poblacion inicial
 poblation = generatePoblation(10)
 
-while (generation < 1000) {
+console.log("POBLACION INICIAL: ")
+console.log("-----------------------")
+
+poblation.forEach((cromosoma) => {
+  console.log(cromosoma.join(""))
+  console.log("-")
+})
+
+console.log("-----------------------")
+
+while (generation < 2000) {
   selection_and_cruce(generation === 1)
   mutation()
   generation += 1
