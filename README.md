@@ -8,4 +8,4 @@
 
 El archivo lo creamos en un proyecto Gatsby porque la idea era mostrar
 los resultados en una pagina web pero no nos alcanzo para eso por eso se
-borrar los archivos.
+borraron los archivos.
